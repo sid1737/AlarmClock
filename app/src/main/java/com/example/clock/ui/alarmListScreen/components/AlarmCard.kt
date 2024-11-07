@@ -1,4 +1,4 @@
-package com.example.clock.ui.alarmList.components
+package com.example.clock.ui.alarmListScreen.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

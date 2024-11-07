@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.clock.ui.alarmList.components.AlarmCard
+import com.example.clock.ui.alarmListScreen.components.AlarmCard
 import com.example.clock.ui.theme.ClockTheme
 
 class MainActivity : ComponentActivity() {
