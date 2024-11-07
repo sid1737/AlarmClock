@@ -23,10 +23,18 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.clock.ui.theme.brightBlue
+import com.example.clock.ui.theme.cardCornerRadius
+import com.example.clock.ui.theme.cardElevation
+import com.example.clock.ui.theme.defaultPadding
+import com.example.clock.ui.theme.extraLargeTextSize
+import com.example.clock.ui.theme.largeTextSize
 import com.example.clock.ui.theme.montSerratFontFamily
+import com.example.clock.ui.theme.paddingExtraSmall
+import com.example.clock.ui.theme.paddingSmall
+import com.example.clock.ui.theme.smallTextSize
+import com.example.clock.ui.theme.verticalSpacerHeightMedium
+import com.example.clock.ui.theme.verticalSpacerHeightSmall
 
 @Composable
 fun AlarmCard(
@@ -42,16 +50,19 @@ fun AlarmCard(
 
     Card(
         modifier = modifier
-            .padding(16.dp)
+            .padding(defaultPadding)
             .fillMaxWidth()
-            .shadow(elevation = 4.dp, shape = RoundedCornerShape(10.dp)),
-        shape = RoundedCornerShape(10.dp),
+            .shadow(
+                elevation = cardElevation,
+                shape = RoundedCornerShape(cardCornerRadius)
+            ),
+        shape = RoundedCornerShape(cardCornerRadius),
 
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp)
+                .padding(paddingSmall)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -60,10 +71,10 @@ fun AlarmCard(
             ) {
                 Text(
                     text = alarmTitle,
-                    fontSize = 24.sp,
+                    fontSize = largeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Normal,
-                    modifier = Modifier.padding(top = 7.dp)
+                    modifier = Modifier.padding(top = paddingExtraSmall)
                 )
                 Switch(
                     checked = isAlarmActive,
@@ -81,7 +92,7 @@ fun AlarmCard(
                 )
             }
             Spacer(
-                modifier = Modifier.height(4.dp)
+                modifier = Modifier.height(verticalSpacerHeightSmall)
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -90,25 +101,25 @@ fun AlarmCard(
             ) {
                 Text(
                     text = alarmTime,
-                    fontSize = 42.sp,
+                    fontSize = extraLargeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.alignByBaseline()
                 )
                 Text(
                     text = if (isDayTime) "AM" else "PM",
-                    fontSize = 24.sp,
+                    fontSize = largeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier.alignByBaseline()
                 )
             }
             Spacer(
-                modifier = Modifier.height(8.dp)
+                modifier = Modifier.height(verticalSpacerHeightMedium)
             )
             Text(
                 text = alarmDescription,
-                fontSize = 14.sp,
+                fontSize = smallTextSize,
                 fontFamily = montSerratFontFamily,
                 fontWeight = FontWeight.Normal,
             )
