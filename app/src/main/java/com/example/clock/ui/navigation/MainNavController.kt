@@ -19,7 +19,7 @@ fun MainNavController(
         startDestination = Screen.AlarmListScreen.route
     ) {
         composable(route = Screen.AlarmListScreen.route) {
-            AlarmListScreen()
+            AlarmListScreen(navController = navController)
         }
         composable(route = Screen.CreateAlarmScreen.route) {
 

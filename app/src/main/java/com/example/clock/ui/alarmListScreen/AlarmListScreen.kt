@@ -20,7 +20,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.clock.ui.alarmListScreen.components.AlarmCard
+import com.example.clock.ui.navigation.Screen
 import com.example.clock.ui.theme.brightBlue
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.largeTextSize
@@ -29,13 +32,14 @@ import com.example.clock.ui.theme.paddingExtraLarge
 
 @Composable
 fun AlarmListScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navController: NavController
 ) {
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-
+                    navController.navigate(Screen.CreateAlarmScreen.route)
                 },
                 shape = CircleShape,
                 containerColor = brightBlue
@@ -95,5 +99,7 @@ fun AlarmListScreen(
 @Preview
 @Composable
 fun AlarmListScreenPreview() {
-    AlarmListScreen()
+    AlarmListScreen(
+        navController = rememberNavController()
+    )
 }
