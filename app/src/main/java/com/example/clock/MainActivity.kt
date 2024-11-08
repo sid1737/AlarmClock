@@ -15,9 +15,9 @@ import com.example.clock.ui.theme.ClockTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        super.onCreate(savedInstanceState)
         installSplashScreen()
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             ClockTheme {
                 Surface(
