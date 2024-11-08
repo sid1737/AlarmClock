@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.clock.ui.theme.brightBlue
 import com.example.clock.ui.theme.cardCornerRadius
 import com.example.clock.ui.theme.cardElevation
-import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.extraLargeTextSize
 import com.example.clock.ui.theme.largeTextSize
 import com.example.clock.ui.theme.montSerratFontFamily
@@ -50,14 +49,12 @@ fun AlarmCard(
 
     Card(
         modifier = modifier
-            .padding(defaultPadding)
             .fillMaxWidth()
             .shadow(
                 elevation = cardElevation,
                 shape = RoundedCornerShape(cardCornerRadius)
             ),
         shape = RoundedCornerShape(cardCornerRadius),
-
     ) {
         Column(
             modifier = Modifier

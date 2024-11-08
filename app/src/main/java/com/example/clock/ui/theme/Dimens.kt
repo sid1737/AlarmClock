@@ -13,3 +13,4 @@ val largeTextSize = 24.sp
 val extraLargeTextSize = 42.sp
 val verticalSpacerHeightSmall = 4.dp
 val verticalSpacerHeightMedium = 8.dp
+val paddingExtraLarge = 24.dp
