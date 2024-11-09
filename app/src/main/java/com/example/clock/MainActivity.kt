@@ -10,8 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.room.Room
 import com.example.clock.data.database.AlarmDatabase
+import com.example.clock.ui.alarmListScreen.AlarmListViewModel
+import com.example.clock.ui.alarmListScreen.AlarmListViewModelFactory
 import com.example.clock.ui.navigation.MainNavController
 import com.example.clock.ui.theme.ClockTheme
 
@@ -25,6 +29,9 @@ class MainActivity : ComponentActivity() {
         ).build()
     }
 
+    private val alarmListViewModelFactory = AlarmListViewModelFactory(database)
+    private val alarmListViewModel = ViewModelProvider(this , alarmListViewModelFactory)[AlarmListViewModel::class.java]
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -34,7 +41,9 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    MainNavController()
+                    MainNavController(
+                        alarmListViewModel = alarmListViewModel
+                    )
                 }
             }
         }
@@ -48,7 +57,7 @@ fun GreetingPreview() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            MainNavController()
+            MainNavController(alarmListViewModel = viewModel())
         }
     }
 }

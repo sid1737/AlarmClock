@@ -7,20 +7,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.clock.ui.alarmListScreen.AlarmListScreen
+import com.example.clock.ui.alarmListScreen.AlarmListViewModel
 
 @Composable
 fun MainNavController(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    alarmListViewModel: AlarmListViewModel
 ) {
     val navController = rememberNavController()
+
     NavHost(
         modifier = modifier.fillMaxSize(),
         navController = navController,
         startDestination = Screen.AlarmListScreen.route
     ) {
         composable(route = Screen.AlarmListScreen.route) {
-            AlarmListScreen(navController = navController)
+            AlarmListScreen(
+                navController = navController,
+                viewModel = alarmListViewModel
+            )
         }
+
         composable(route = Screen.CreateAlarmScreen.route) {
 
         }
