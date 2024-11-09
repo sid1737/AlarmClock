@@ -10,10 +10,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.room.Room
+import com.example.clock.data.database.AlarmDatabase
 import com.example.clock.ui.navigation.MainNavController
 import com.example.clock.ui.theme.ClockTheme
 
 class MainActivity : ComponentActivity() {
+
+    private val database by lazy {
+        Room.databaseBuilder(
+            this,
+            AlarmDatabase::class.java,
+            "alarm_database"
+        ).build()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)

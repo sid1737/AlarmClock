@@ -58,4 +58,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.viewmodel.compose)
+    implementation(libs.androidx.room)
+    implementation(libs.androidx.room.compiler)
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.lifecycle.common)
+    implementation(libs.kotlin.std)
+    api(libs.kotlinx.coroutines.core)
+    api(libs.kotlinx.coroutines.android)
 }
