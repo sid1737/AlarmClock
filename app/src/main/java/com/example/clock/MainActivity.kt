@@ -21,20 +21,20 @@ import com.example.clock.ui.theme.ClockTheme
 
 class MainActivity : ComponentActivity() {
 
-    private val database by lazy {
-        Room.databaseBuilder(
-            this,
-            AlarmDatabase::class.java,
-            "alarm_database"
-        ).build()
-    }
-
-    private val alarmListViewModelFactory = AlarmListViewModelFactory(database)
-    private val alarmListViewModel = ViewModelProvider(this , alarmListViewModelFactory)[AlarmListViewModel::class.java]
-
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        val database by lazy {
+            Room.databaseBuilder(
+                applicationContext,
+                AlarmDatabase::class.java,
+                "alarm_database"
+            ).build()
+        }
+
+        val alarmListViewModelFactory = AlarmListViewModelFactory(database)
+        val alarmListViewModel = ViewModelProvider(this , alarmListViewModelFactory)[AlarmListViewModel::class.java]
+
         enableEdgeToEdge()
         setContent {
             ClockTheme {

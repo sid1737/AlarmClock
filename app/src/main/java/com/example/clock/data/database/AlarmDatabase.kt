@@ -6,9 +6,10 @@ import com.example.clock.domain.models.Alarm
 
 @Database(
     entities = [Alarm::class],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
-public abstract class AlarmDatabase: RoomDatabase() {
+abstract class AlarmDatabase: RoomDatabase() {
 
     abstract val alarmDao: AlarmDao
 }
