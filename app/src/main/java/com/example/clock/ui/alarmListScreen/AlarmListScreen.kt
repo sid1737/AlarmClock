@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +39,8 @@ fun AlarmListScreen(
     navController: NavController,
     viewModel: AlarmListViewModel
 ) {
+    val alarms = viewModel.listOfAlarmData.collectAsState()
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -82,15 +86,15 @@ fun AlarmListScreen(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                items(count = 10) {
+                items(alarms.value) { alarm ->
                     AlarmCard(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = defaultPadding),
-                        alarmTitle = "Hello sidhdesh",
-                        alarmDescription = "This is alarm no. $it",
-                        alarmTime = "10:00",
-                        isDayTime = true
+                        alarm = alarm,
+                        onClick = {
+                            viewModel.onEvent(AlarmListEvents.DisableAlarm(alarm))
+                        }
                     )
                 }
             }

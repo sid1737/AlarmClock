@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.clock.domain.models.Alarm
 import com.example.clock.ui.theme.brightBlue
 import com.example.clock.ui.theme.cardCornerRadius
 import com.example.clock.ui.theme.cardElevation
@@ -39,13 +40,11 @@ import com.example.clock.ui.theme.verticalSpacerHeightSmall
 @Composable
 fun AlarmCard(
     modifier: Modifier = Modifier,
-    alarmTitle: String,
-    alarmTime: String,
-    isDayTime: Boolean,
-    alarmDescription: String
+    alarm: Alarm,
+    onClick: (alarm: Alarm) -> Unit
 ) {
     var isAlarmActive by remember {
-        mutableStateOf(true)
+        mutableStateOf(alarm.isAlarmActive)
     }
 
     Card(
@@ -69,7 +68,7 @@ fun AlarmCard(
                 verticalAlignment = Alignment.Top
             ) {
                 Text(
-                    text = alarmTitle,
+                    text = alarm.alarmTitle,
                     fontSize = largeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Normal,
@@ -79,6 +78,7 @@ fun AlarmCard(
                     checked = isAlarmActive,
                     onCheckedChange = {
                         isAlarmActive = !isAlarmActive
+                        onClick(alarm.copy(isAlarmActive = isAlarmActive))
                     },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = Color.White,
@@ -99,14 +99,14 @@ fun AlarmCard(
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = alarmTime,
+                    text = alarm.time,
                     fontSize = extraLargeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.alignByBaseline()
                 )
                 Text(
-                    text = if (isDayTime) "AM" else "PM",
+                    text = if (alarm.isDayTime) "AM" else "PM",
                     fontSize = largeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Normal,
@@ -117,7 +117,7 @@ fun AlarmCard(
                 modifier = Modifier.height(verticalSpacerHeightMedium)
             )
             Text(
-                text = alarmDescription,
+                text = alarm.alarmDescription,
                 fontSize = smallTextSize,
                 fontFamily = montSerratFontFamily,
                 fontWeight = FontWeight.Normal,
@@ -129,10 +129,15 @@ fun AlarmCard(
 @Preview
 @Composable
 fun Preview() {
-    AlarmCard(
+    val mockAlarm = Alarm(
         alarmTitle = "Wake Up",
-        alarmTime = "10:00",
+        time = "10:00",
         isDayTime = true,
-        alarmDescription = "Alarm in 30 min"
+        alarmDescription = "Alarm in 30 min",
+        isAlarmActive = true
+    )
+    AlarmCard(
+        alarm = mockAlarm,
+        onClick = {}
     )
 }
