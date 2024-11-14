@@ -32,30 +32,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.clock.ui.theme.brightBlue
+import com.example.clock.ui.theme.createAlarmTextColour
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.largeTextSize
 import com.example.clock.ui.theme.montSerratFontFamily
 import com.example.clock.ui.theme.screenBackground
 import com.example.clock.ui.theme.smallTextSize
+import com.example.clock.utilities.AlarmUtility.calculateRemainingTime
+import com.example.clock.utilities.AlarmUtility.checkForSpecialCharacters
+import com.example.clock.utilities.AlarmUtility.isValid12HourFormatTime
+import com.example.clock.utilities.AlarmUtility.validateHourInput
+import com.example.clock.utilities.AlarmUtility.validateMinutesInput
 
 @Composable
 fun AlarmTimeComponent(
-    hours: String = "12",
-    minutes: String = "00",
     modifier: Modifier = Modifier,
+    onValidInput: (String) -> Unit
 ) {
     var hourPart by remember {
-        mutableStateOf(hours)
+        mutableStateOf("00")
     }
 
     var minutesPart by remember {
-        mutableStateOf(minutes)
+        mutableStateOf("00")
     }
+
 
     val textStyle = TextStyle(
         fontFamily = montSerratFontFamily,
         fontSize = largeTextSize,
-        color = if (hourPart.toInt() == 0 && minutesPart.toInt() == 0) Color.Gray else brightBlue,
+        color = if ((hourPart.isEmpty() || hourPart.toInt() == 0)
+            && (minutesPart.toInt() == 0 || minutesPart.isEmpty())
+        ) createAlarmTextColour else brightBlue,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.SemiBold
     )
@@ -64,9 +72,10 @@ fun AlarmTimeComponent(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
     ) {
-        Column (
+        Column(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(defaultPadding),
@@ -88,7 +97,10 @@ fun AlarmTimeComponent(
                             .fillMaxWidth(),
                         value = hourPart,
                         onValueChange = { newHours ->
-                            hourPart = newHours
+                            if (!checkForSpecialCharacters(newHours.trim()) && newHours.count() <= 2) {
+                                hourPart = validateHourInput(newHours.trim())
+                                onValidInput("$hourPart:$minutesPart")
+                            }
                         },
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
@@ -125,7 +137,10 @@ fun AlarmTimeComponent(
                             .fillMaxWidth(),
                         value = minutesPart,
                         onValueChange = { newMins ->
-                            minutesPart = newMins
+                            if (!checkForSpecialCharacters(newMins.trim()) && newMins.count() <= 2) {
+                                minutesPart = validateMinutesInput(newMins.trim())
+                                onValidInput("$hourPart:$minutesPart")
+                            }
                         },
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
@@ -143,13 +158,15 @@ fun AlarmTimeComponent(
             Spacer(
                 modifier = Modifier.height(10.dp)
             )
-            Text(
-                text ="Alarm in 7h",
-                fontSize = smallTextSize,
-                fontFamily = montSerratFontFamily,
-                fontWeight = FontWeight.Thin,
-
-            )
+            if (isValid12HourFormatTime("$hourPart:$minutesPart")) {
+                Text(
+                    text = calculateRemainingTime(hourPart, minutesPart),
+                    color = createAlarmTextColour,
+                    fontSize = smallTextSize,
+                    fontFamily = montSerratFontFamily,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
         }
     }
 }
@@ -158,7 +175,6 @@ fun AlarmTimeComponent(
 @Composable
 fun PreviewAlarmComponent() {
     AlarmTimeComponent(
-        hours = "00",
-        minutes = "00"
+        onValidInput = {}
     )
 }

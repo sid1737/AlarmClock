@@ -6,11 +6,12 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.clock.ui.theme.defaultPadding
+import com.example.clock.ui.theme.gray
 
 @Composable
 fun CurvedButtonCloseIcon(
@@ -18,15 +19,16 @@ fun CurvedButtonCloseIcon(
     modifier: Modifier = Modifier
 ) {
     val buttonShape = RoundedCornerShape(defaultPadding)
-    val disabledButtonColour = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
 
     Button(
-        modifier = modifier,
         onClick = {
             onClick()
         },
         shape = buttonShape,
-        colors = ButtonDefaults.buttonColors(disabledButtonColour)
+        colors = ButtonDefaults.buttonColors(
+            containerColor = gray,
+            contentColor = Color.White
+        )
     ) {
         Icon(
             imageVector = Icons.Default.Close,
@@ -34,4 +36,12 @@ fun CurvedButtonCloseIcon(
             contentDescription = "Close"
         )
     }
+}
+
+@Preview
+@Composable
+fun PreviewCurvedButtonCloseIcon() {
+    CurvedButtonCloseIcon(
+        onClick = {}
+    )
 }

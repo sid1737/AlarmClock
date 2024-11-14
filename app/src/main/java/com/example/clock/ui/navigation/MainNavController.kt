@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.clock.ui.alarmListScreen.AlarmListScreen
 import com.example.clock.ui.alarmListScreen.AlarmListViewModel
+import com.example.clock.ui.createAlarmScreen.CreateAlarmScreen
 
 @Composable
 fun MainNavController(
@@ -29,7 +30,9 @@ fun MainNavController(
         }
 
         composable(route = Screen.CreateAlarmScreen.route) {
-
+            CreateAlarmScreen(
+                navController = navController
+            )
         }
     }
 }

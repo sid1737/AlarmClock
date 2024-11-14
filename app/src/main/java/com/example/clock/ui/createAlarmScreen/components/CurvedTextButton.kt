@@ -8,9 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.clock.ui.theme.brightBlue
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.gray
+import com.example.clock.ui.theme.montSerratFontFamily
 
 @Composable
 fun CurvedTextButton(
@@ -33,8 +36,22 @@ fun CurvedTextButton(
         Text(
             text = buttonText,
             style = TextStyle(
-                color = Color.White
+                color = Color.White,
+                fontFamily = montSerratFontFamily,
+                fontWeight = FontWeight.Bold
             )
         )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewCurvedTextButton() {
+    CurvedTextButton(
+        isEnabled = false,
+        buttonText = "Save"
+
+    ) {
+
     }
 }
