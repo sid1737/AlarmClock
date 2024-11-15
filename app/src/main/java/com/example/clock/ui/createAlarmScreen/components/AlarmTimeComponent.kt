@@ -40,7 +40,7 @@ import com.example.clock.ui.theme.screenBackground
 import com.example.clock.ui.theme.smallTextSize
 import com.example.clock.utilities.AlarmUtility.calculateRemainingTime
 import com.example.clock.utilities.AlarmUtility.checkForSpecialCharacters
-import com.example.clock.utilities.AlarmUtility.isValid12HourFormatTime
+import com.example.clock.utilities.AlarmUtility.isValid24HourFormatTime
 import com.example.clock.utilities.AlarmUtility.validateHourInput
 import com.example.clock.utilities.AlarmUtility.validateMinutesInput
 
@@ -62,7 +62,7 @@ fun AlarmTimeComponent(
         fontFamily = montSerratFontFamily,
         fontSize = largeTextSize,
         color = if ((hourPart.isEmpty() || hourPart.toInt() == 0)
-            && (minutesPart.toInt() == 0 || minutesPart.isEmpty())
+            && (minutesPart.isEmpty() || minutesPart.toInt() == 0)
         ) createAlarmTextColour else brightBlue,
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.SemiBold
@@ -158,7 +158,7 @@ fun AlarmTimeComponent(
             Spacer(
                 modifier = Modifier.height(10.dp)
             )
-            if (isValid12HourFormatTime("$hourPart:$minutesPart")) {
+            if (isValid24HourFormatTime("$hourPart:$minutesPart")) {
                 Text(
                     text = calculateRemainingTime(hourPart, minutesPart),
                     color = createAlarmTextColour,

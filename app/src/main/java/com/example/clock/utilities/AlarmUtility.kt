@@ -5,8 +5,11 @@ import java.time.LocalTime
 import java.util.Locale
 
 object AlarmUtility {
-    fun isValid12HourFormatTime(time: String): Boolean {
-        val timeFormat = SimpleDateFormat("hh:mm", Locale.getDefault())
+    fun isValid24HourFormatTime(time: String): Boolean {
+        if (time.isBlank()) {
+            return false
+        }
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
         timeFormat.isLenient = false
 
         return try {
@@ -26,7 +29,7 @@ object AlarmUtility {
             return newHours
         }
         val hours = newHours.toInt()
-        return if (hours in 0..12) {
+        return if (hours in 0..23) {
             newHours
         } else {
             newHours.substring(0,1)
@@ -49,15 +52,14 @@ object AlarmUtility {
         val targetTime = LocalTime.of(hours.toInt(), minutes.toInt())
 
         val currentTime = LocalTime.now()
-        val currentTimeIn12HourFormat = currentTime.withHour(currentTime.hour % 12)
 
-        val currentTimeInMinutes = currentTimeIn12HourFormat.hour * 60 + currentTimeIn12HourFormat.minute
+        val currentTimeInMinutes = currentTime.hour * 60 + currentTime.minute
         val targetTimeInMinutes = targetTime.hour * 60 + targetTime.minute
 
         var difference = targetTimeInMinutes - currentTimeInMinutes
 
         if (difference < 0) {
-            difference += 12 * 60
+            difference += 24 * 60
         }
 
         val remainingHours = difference / 60

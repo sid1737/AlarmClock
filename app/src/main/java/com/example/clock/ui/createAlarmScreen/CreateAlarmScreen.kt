@@ -27,7 +27,7 @@ import com.example.clock.ui.createAlarmScreen.components.CurvedButtonCloseIcon
 import com.example.clock.ui.createAlarmScreen.components.CurvedTextButton
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.screenBackground
-import com.example.clock.utilities.AlarmUtility.isValid12HourFormatTime
+import com.example.clock.utilities.AlarmUtility.isValid24HourFormatTime
 
 @Composable
 fun CreateAlarmScreen(
@@ -36,6 +36,14 @@ fun CreateAlarmScreen(
 ) {
     var isSaveButtonActive by remember {
         mutableStateOf(false)
+    }
+
+    var alarmName by remember {
+        mutableStateOf("Work")
+    }
+
+    var timeData by remember {
+        mutableStateOf("")
     }
 
     Box(
@@ -77,7 +85,8 @@ fun CreateAlarmScreen(
             )
             AlarmTimeComponent(
                 onValidInput = { time ->
-                    isSaveButtonActive = isValid12HourFormatTime(time)
+                    timeData = time
+                    isSaveButtonActive = isValid24HourFormatTime(time) && alarmName.isNotBlank()
                 }
             )
             Spacer(
@@ -85,7 +94,10 @@ fun CreateAlarmScreen(
                     .height(defaultPadding)
             )
             AlarmNameComponent(
-                alarmName = "Work"
+                alarmName = "Work",
+                setAlarmName = {
+                    alarmName = it
+                }
             )
         }
     }

@@ -1,6 +1,7 @@
 package com.example.clock.ui.createAlarmScreen.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,10 +31,22 @@ import com.example.clock.ui.theme.standardTextSize
 @Composable
 fun AlarmNameComponent(
     modifier: Modifier = Modifier,
-    alarmName: String
+    alarmName: String = "Work",
+    setAlarmName: (String) -> Unit
 ) {
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    var alarmNameData by remember {
+        mutableStateOf(alarmName)
+    }
+
     Box(
         modifier = modifier
+            .clickable {
+                openDialog = true
+            }
             .fillMaxWidth()
             .clip(RoundedCornerShape(13.dp))
             .background(Color.White)
@@ -51,7 +68,7 @@ fun AlarmNameComponent(
                 )
             )
             Text(
-                text = alarmName,
+                text = alarmNameData,
                 style = TextStyle(
                     fontFamily = montSerratFontFamily,
                     fontSize = smallTextSize,
@@ -61,12 +78,28 @@ fun AlarmNameComponent(
             )
         }
     }
+
+    if (openDialog) {
+        AlertDialogComponent(
+            setAlarmName = {
+                alarmNameData = it
+                openDialog = false
+                setAlarmName(alarmName)
+            },
+            dismissAlarm = {
+                openDialog = false
+            },
+        )
+    }
 }
 
 @Preview
 @Composable
 fun PreviewAlarmNameComponent() {
     AlarmNameComponent(
-        alarmName = "demo"
+        alarmName = "demo",
+        setAlarmName = {
+
+        }
     )
 }

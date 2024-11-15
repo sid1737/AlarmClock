@@ -28,7 +28,9 @@ fun CurvedTextButton(
     Button(
         modifier = modifier,
         onClick = {
-            onButtonClick()
+            if (isEnabled) {
+                onButtonClick()
+            }
         },
         shape = shape,
         colors = ButtonDefaults.buttonColors(buttonColour)
