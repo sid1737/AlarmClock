@@ -68,7 +68,7 @@ fun AlarmCard(
                 verticalAlignment = Alignment.Top
             ) {
                 Text(
-                    text = alarm.alarmTitle,
+                    text = alarm.alarmName,
                     fontSize = largeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Normal,
@@ -105,13 +105,13 @@ fun AlarmCard(
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.alignByBaseline()
                 )
-                Text(
+/*                Text(
                     text = if (alarm.isDayTime) "AM" else "PM",
                     fontSize = largeTextSize,
                     fontFamily = montSerratFontFamily,
                     fontWeight = FontWeight.Normal,
                     modifier = Modifier.alignByBaseline()
-                )
+                )*/
             }
             Spacer(
                 modifier = Modifier.height(verticalSpacerHeightMedium)
@@ -130,11 +130,10 @@ fun AlarmCard(
 @Composable
 fun Preview() {
     val mockAlarm = Alarm(
-        alarmTitle = "Wake Up",
         time = "10:00",
-        isDayTime = true,
         alarmDescription = "Alarm in 30 min",
-        isAlarmActive = true
+        isAlarmActive = true,
+        alarmName = "Work"
     )
     AlarmCard(
         alarm = mockAlarm,

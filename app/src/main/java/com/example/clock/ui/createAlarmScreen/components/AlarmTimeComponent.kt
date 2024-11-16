@@ -47,7 +47,8 @@ import com.example.clock.utilities.AlarmUtility.validateMinutesInput
 @Composable
 fun AlarmTimeComponent(
     modifier: Modifier = Modifier,
-    onValidInput: (String) -> Unit
+    onValidInput: (String) -> Unit,
+    onCalculatedRemainingTime: (String) -> Unit
 ) {
     var hourPart by remember {
         mutableStateOf("00")
@@ -159,8 +160,10 @@ fun AlarmTimeComponent(
                 modifier = Modifier.height(10.dp)
             )
             if (isValid24HourFormatTime("$hourPart:$minutesPart")) {
+                val remainingTimeString = calculateRemainingTime(hourPart, minutesPart)
+                onCalculatedRemainingTime(remainingTimeString)
                 Text(
-                    text = calculateRemainingTime(hourPart, minutesPart),
+                    text = remainingTimeString,
                     color = createAlarmTextColour,
                     fontSize = smallTextSize,
                     fontFamily = montSerratFontFamily,
@@ -175,6 +178,7 @@ fun AlarmTimeComponent(
 @Composable
 fun PreviewAlarmComponent() {
     AlarmTimeComponent(
-        onValidInput = {}
+        onValidInput = {},
+        onCalculatedRemainingTime = {}
     )
 }

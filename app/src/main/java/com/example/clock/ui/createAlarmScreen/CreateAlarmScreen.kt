@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.clock.ui.createAlarmScreen.components.AlarmNameComponent
@@ -32,7 +33,8 @@ import com.example.clock.utilities.AlarmUtility.isValid24HourFormatTime
 @Composable
 fun CreateAlarmScreen(
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    viewModel: CreateAlarmViewModel
 ) {
     var isSaveButtonActive by remember {
         mutableStateOf(false)
@@ -43,6 +45,10 @@ fun CreateAlarmScreen(
     }
 
     var timeData by remember {
+        mutableStateOf("")
+    }
+    
+    var alarmDescription by remember {
         mutableStateOf("")
     }
 
@@ -76,7 +82,15 @@ fun CreateAlarmScreen(
                     isEnabled = isSaveButtonActive,
                     buttonText = "Save",
                 ) {
-
+                    if (isSaveButtonActive) {
+                        val alarmData = viewModel.createAlarmObject(
+                            time = timeData,
+                            alarmDescription = alarmDescription,
+                            alarmName = alarmName
+                        )
+                        viewModel.onEvent(CreateAlarmEvents.OnSaveButtonClick(alarmData))
+                        navController.navigateUp()
+                    }
                 }
             }
             Spacer(
@@ -87,6 +101,9 @@ fun CreateAlarmScreen(
                 onValidInput = { time ->
                     timeData = time
                     isSaveButtonActive = isValid24HourFormatTime(time) && alarmName.isNotBlank()
+                },
+                onCalculatedRemainingTime = { remainingTimeString ->
+                    alarmDescription = remainingTimeString
                 }
             )
             Spacer(
@@ -107,6 +124,7 @@ fun CreateAlarmScreen(
 @Composable
 fun CreateAlarmScreenPreview() {
     CreateAlarmScreen(
-        navController = rememberNavController()
+        navController = rememberNavController(),
+        viewModel = viewModel()
     )
 }

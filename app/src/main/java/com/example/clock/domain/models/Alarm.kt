@@ -7,9 +7,8 @@ import androidx.room.PrimaryKey
 data class Alarm(
     @PrimaryKey
     val id: Int? = null,
-    val alarmTitle: String,
     val time: String,
-    val isDayTime: Boolean,
     var isAlarmActive: Boolean,
-    val alarmDescription: String
+    val alarmDescription: String,
+    val alarmName: String
 )

@@ -16,6 +16,8 @@ import androidx.room.Room
 import com.example.clock.data.database.AlarmDatabase
 import com.example.clock.ui.alarmListScreen.AlarmListViewModel
 import com.example.clock.ui.alarmListScreen.AlarmListViewModelFactory
+import com.example.clock.ui.createAlarmScreen.CreateAlarmViewModel
+import com.example.clock.ui.createAlarmScreen.CreateAlarmViewModelFactory
 import com.example.clock.ui.navigation.MainNavController
 import com.example.clock.ui.theme.ClockTheme
 
@@ -29,11 +31,15 @@ class MainActivity : ComponentActivity() {
                 applicationContext,
                 AlarmDatabase::class.java,
                 "alarm_database"
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
         }
 
         val alarmListViewModelFactory = AlarmListViewModelFactory(database)
         val alarmListViewModel = ViewModelProvider(this , alarmListViewModelFactory)[AlarmListViewModel::class.java]
+
+        val createAlarmViewModelFactory = CreateAlarmViewModelFactory(database)
+        val createAlarmViewModel = ViewModelProvider(this, createAlarmViewModelFactory)[CreateAlarmViewModel::class.java]
 
         enableEdgeToEdge()
         setContent {
@@ -42,7 +48,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize()
                 ) {
                     MainNavController(
-                        alarmListViewModel = alarmListViewModel
+                        alarmListViewModel = alarmListViewModel,
+                        createAlarmViewModel = createAlarmViewModel
                     )
                 }
             }
@@ -57,7 +64,10 @@ fun GreetingPreview() {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            MainNavController(alarmListViewModel = viewModel())
+            MainNavController(
+                alarmListViewModel = viewModel(),
+                createAlarmViewModel = viewModel()
+            )
         }
     }
 }

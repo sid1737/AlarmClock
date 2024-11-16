@@ -1,5 +1,6 @@
 package com.example.clock.ui.alarmListScreen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.largeTextSize
 import com.example.clock.ui.theme.montSerratFontFamily
 import com.example.clock.ui.theme.paddingExtraLarge
+import com.example.clock.ui.theme.screenBackground
 
 @Composable
 fun AlarmListScreen(
@@ -63,6 +65,7 @@ fun AlarmListScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(screenBackground)
                 .padding(innerPadding)
                 .padding(
                     start = defaultPadding,

@@ -9,11 +9,13 @@ import androidx.navigation.compose.rememberNavController
 import com.example.clock.ui.alarmListScreen.AlarmListScreen
 import com.example.clock.ui.alarmListScreen.AlarmListViewModel
 import com.example.clock.ui.createAlarmScreen.CreateAlarmScreen
+import com.example.clock.ui.createAlarmScreen.CreateAlarmViewModel
 
 @Composable
 fun MainNavController(
     modifier: Modifier = Modifier,
-    alarmListViewModel: AlarmListViewModel
+    alarmListViewModel: AlarmListViewModel,
+    createAlarmViewModel: CreateAlarmViewModel
 ) {
     val navController = rememberNavController()
 
@@ -31,7 +33,8 @@ fun MainNavController(
 
         composable(route = Screen.CreateAlarmScreen.route) {
             CreateAlarmScreen(
-                navController = navController
+                navController = navController,
+                viewModel = createAlarmViewModel
             )
         }
     }
