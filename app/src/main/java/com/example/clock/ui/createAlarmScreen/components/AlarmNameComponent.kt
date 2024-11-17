@@ -18,11 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.clock.R
 import com.example.clock.ui.theme.createAlarmTextColour
 import com.example.clock.ui.theme.montSerratFontFamily
 import com.example.clock.ui.theme.smallTextSize
@@ -34,6 +36,8 @@ fun AlarmNameComponent(
     alarmName: String = "Work",
     setAlarmName: (String) -> Unit
 ) {
+    val context = LocalContext.current
+
     var openDialog by remember {
         mutableStateOf(false)
     }
@@ -59,7 +63,7 @@ fun AlarmNameComponent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Alarm Name",
+                text = context.getString(R.string.alarm_name),
                 style = TextStyle(
                     fontFamily = montSerratFontFamily,
                     fontSize = standardTextSize,

@@ -52,7 +52,6 @@ fun PreviewCurvedTextButton() {
     CurvedTextButton(
         isEnabled = false,
         buttonText = "Save"
-
     ) {
 
     }

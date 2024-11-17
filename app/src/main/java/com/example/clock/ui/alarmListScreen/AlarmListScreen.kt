@@ -23,6 +23,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,6 +48,7 @@ fun AlarmListScreen(
     viewModel: AlarmListViewModel
 ) {
     val alarms = viewModel.listOfAlarmData.collectAsState()
+    val context = LocalContext.current
 
     Scaffold(
         floatingActionButton = {
@@ -91,7 +93,7 @@ fun AlarmListScreen(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    text = "It's empty! Add the first alarm so you don't miss an important moment!"
+                    text = context.getString(R.string.no_alarms)
                 )
             }
         } else {

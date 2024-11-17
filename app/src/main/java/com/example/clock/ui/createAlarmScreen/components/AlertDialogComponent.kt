@@ -25,11 +25,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.clock.R
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.montSerratFontFamily
 import com.example.clock.ui.theme.standardTextSize
@@ -40,6 +42,8 @@ fun AlertDialogComponent(
     setAlarmName : (String) -> Unit,
     dismissAlarm: () -> Unit
 ) {
+    val context = LocalContext.current
+
     var textData by remember {
         mutableStateOf("")
     }
@@ -60,7 +64,7 @@ fun AlertDialogComponent(
                 modifier = Modifier.padding(defaultPadding)
             ) {
                 Text(
-                    text = "Alarm name",
+                    text = context.getString(R.string.alarm_name),
                     style = TextStyle(
                         fontFamily = montSerratFontFamily,
                         fontSize = standardTextSize,
@@ -93,7 +97,7 @@ fun AlertDialogComponent(
                     )
                     CurvedTextButton(
                         isEnabled = textData.isNotBlank(),
-                        buttonText = "Save"
+                        buttonText = context.getString(R.string.save_button_text)
                     ) {
                         setAlarmName(textData)
                     }
