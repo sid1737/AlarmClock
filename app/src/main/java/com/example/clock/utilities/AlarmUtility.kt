@@ -67,4 +67,10 @@ object AlarmUtility {
 
         return "Alarm in ${remainingHours}h ${remainingMinutes}mins"
     }
+
+    fun convertTimeToMilliseconds(timeString: String): Long {
+        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
+        val date = format.parse(timeString)
+        return date?.time ?: 0L
+    }
 }
