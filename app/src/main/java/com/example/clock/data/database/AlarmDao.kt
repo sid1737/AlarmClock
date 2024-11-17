@@ -1,6 +1,7 @@
 package com.example.clock.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -19,4 +20,7 @@ interface AlarmDao {
 
     @Update
     suspend fun updateAlarm(alarm: Alarm)
+
+    @Delete
+    suspend fun deleteAlarm(alarm: Alarm)
 }

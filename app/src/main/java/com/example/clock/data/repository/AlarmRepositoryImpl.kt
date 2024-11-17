@@ -20,4 +20,8 @@ class AlarmRepositoryImpl(
     override suspend fun updateAlarm(alarm: Alarm) {
         alarmDao.updateAlarm(alarm)
     }
+
+    override suspend fun deleteAlarm(alarm: Alarm) {
+        alarmDao.deleteAlarm(alarm)
+    }
 }

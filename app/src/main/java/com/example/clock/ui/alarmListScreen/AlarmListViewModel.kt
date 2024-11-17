@@ -7,6 +7,7 @@ import com.example.clock.data.database.AlarmDatabase
 import com.example.clock.data.repository.AlarmRepositoryImpl
 import com.example.clock.domain.models.Alarm
 import com.example.clock.domain.repository.AlarmRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +19,7 @@ class AlarmListViewModel(
     private val alarmRepository: AlarmRepository
 ): ViewModel() {
 
-    private val _listOfAlarmData = MutableStateFlow<List<Alarm>>(emptyList())
+    private val _listOfAlarmData = MutableStateFlow<List<Alarm>>(mutableListOf())
     val listOfAlarmData = _listOfAlarmData.asStateFlow()
 
     private var alarmsJob: Job? = null
@@ -33,9 +34,10 @@ class AlarmListViewModel(
     }
 
     fun onEvent(event: AlarmListEvents) {
-        viewModelScope.launch {
-            if (event is AlarmListEvents.DisableAlarm) {
-                alarmRepository.updateAlarm(event.alarm)
+        viewModelScope.launch(Dispatchers.IO) {
+            when (event) {
+                is AlarmListEvents.DisableAlarm -> alarmRepository.updateAlarm(event.alarm)
+                is AlarmListEvents.DeleteAlarm -> alarmRepository.deleteAlarm(event.alarm)
             }
         }
     }

@@ -3,7 +3,6 @@ package com.example.clock.ui.alarmListScreen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,6 +26,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.clock.ui.alarmListScreen.components.AlarmCard
+import com.example.clock.ui.alarmListScreen.components.SwipeToDeleteContainer
 import com.example.clock.ui.navigation.Screen
 import com.example.clock.ui.theme.brightBlue
 import com.example.clock.ui.theme.defaultPadding
@@ -86,16 +87,26 @@ fun AlarmListScreen(
                     .fillMaxSize()
                     .weight(1f)
             ) {
-                items(alarms.value) { alarm ->
-                    AlarmCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = defaultPadding),
-                        alarm = alarm,
-                        onClick = {
-                            viewModel.onEvent(AlarmListEvents.DisableAlarm(alarm))
+                items(alarms.value,
+                    key = { it.id}) { alarm ->
+                    SwipeToDeleteContainer(
+                        item = alarm,
+                        onDelete = {
+                            alarms.value.toMutableStateList() -= alarm
+                            viewModel.onEvent(AlarmListEvents.DeleteAlarm(alarm))
                         }
-                    )
+                    ) {
+                        AlarmCard(
+                            alarm = alarm,
+                            onClick = {
+                                viewModel.onEvent(
+                                    AlarmListEvents.DisableAlarm(
+                                        alarm.copy(isAlarmActive = !alarm.isAlarmActive)
+                                    )
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

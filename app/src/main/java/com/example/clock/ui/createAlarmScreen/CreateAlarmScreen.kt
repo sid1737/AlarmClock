@@ -1,6 +1,5 @@
 package com.example.clock.ui.createAlarmScreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import com.example.clock.ui.createAlarmScreen.components.AlarmTimeComponent
 import com.example.clock.ui.createAlarmScreen.components.CurvedButtonCloseIcon
 import com.example.clock.ui.createAlarmScreen.components.CurvedTextButton
 import com.example.clock.ui.theme.defaultPadding
-import com.example.clock.ui.theme.screenBackground
 import com.example.clock.utilities.AlarmUtility.isValid24HourFormatTime
 
 @Composable
@@ -55,7 +53,6 @@ fun CreateAlarmScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(screenBackground)
     ) {
         Column(
             modifier = Modifier
