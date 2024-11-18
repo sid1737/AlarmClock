@@ -108,7 +108,7 @@ fun CreateAlarmScreen(
                     .height(defaultPadding)
             )
             AlarmNameComponent(
-                alarmName = "Work",
+                alarmName = alarmName,
                 setAlarmName = {
                     alarmName = it
                 }

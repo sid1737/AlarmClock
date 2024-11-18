@@ -87,8 +87,8 @@ fun AlarmNameComponent(
         AlertDialogComponent(
             setAlarmName = {
                 alarmNameData = it
+                setAlarmName(alarmNameData)
                 openDialog = false
-                setAlarmName(alarmName)
             },
             dismissAlarm = {
                 openDialog = false

@@ -32,7 +32,7 @@ class CreateAlarmViewModel(
             time = time,
             isAlarmActive = isAlarmActive,
             alarmDescription = alarmDescription,
-            alarmName =alarmName
+            alarmName = alarmName
         )
     }
 }
