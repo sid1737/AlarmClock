@@ -3,4 +3,6 @@
     <string name="no_alarms">It\'s empty! Add the first alarm so you don\'t miss an important moment!</string>
     <string name="alarm_name">Alarm Name</string>
     <string name="save_button_text">Save</string>
+    <string name="permission_description"> In order to schedule an alarm you need to toggle the permissions. Press below button to navigate to the permissions.</string>
+    <string name="get_permissions_button">Get Permissions</string>
 </resources>

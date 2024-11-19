@@ -1,5 +1,7 @@
 package com.example.clock.ui.createAlarmScreen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,11 +18,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.clock.R
 import com.example.clock.ui.createAlarmScreen.components.AlarmNameComponent
 import com.example.clock.ui.createAlarmScreen.components.AlarmTimeComponent
 import com.example.clock.ui.createAlarmScreen.components.CurvedButtonCloseIcon
@@ -28,6 +32,7 @@ import com.example.clock.ui.createAlarmScreen.components.CurvedTextButton
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.utilities.AlarmUtility.isValid24HourFormatTime
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun CreateAlarmScreen(
     modifier: Modifier = Modifier,
@@ -49,6 +54,8 @@ fun CreateAlarmScreen(
     var alarmDescription by remember {
         mutableStateOf("")
     }
+
+    val context = LocalContext.current
 
     Box(
         modifier = modifier
@@ -77,7 +84,7 @@ fun CreateAlarmScreen(
                 )
                 CurvedTextButton(
                     isEnabled = isSaveButtonActive,
-                    buttonText = "Save",
+                    buttonText = context.getString(R.string.save_button_text),
                 ) {
                     if (isSaveButtonActive) {
                         val alarmData = viewModel.createAlarmObject(
@@ -86,6 +93,7 @@ fun CreateAlarmScreen(
                             alarmName = alarmName
                         )
                         viewModel.onEvent(CreateAlarmEvents.OnSaveButtonClick(alarmData))
+                        viewModel.scheduleAlarm(timeData)
                         navController.navigateUp()
                     }
                 }
@@ -117,6 +125,7 @@ fun CreateAlarmScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.S)
 @Preview
 @Composable
 fun CreateAlarmScreenPreview() {

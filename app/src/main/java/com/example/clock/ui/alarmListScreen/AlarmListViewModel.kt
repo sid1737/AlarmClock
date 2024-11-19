@@ -1,5 +1,7 @@
 package com.example.clock.ui.alarmListScreen
 
+import android.content.Context
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -7,6 +9,8 @@ import com.example.clock.data.database.AlarmDatabase
 import com.example.clock.data.repository.AlarmRepositoryImpl
 import com.example.clock.domain.models.Alarm
 import com.example.clock.domain.repository.AlarmRepository
+import com.example.clock.domain.repository.AlarmScheduler
+import com.example.clock.domain.repository.AlarmSchedulerImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +20,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class AlarmListViewModel(
-    private val alarmRepository: AlarmRepository
+    private val alarmRepository: AlarmRepository,
+    private val alarmScheduler: AlarmScheduler
 ): ViewModel() {
 
     private val _listOfAlarmData = MutableStateFlow<List<Alarm>>(mutableListOf())
@@ -41,13 +46,25 @@ class AlarmListViewModel(
             }
         }
     }
+
+    fun isAndroid12AndAboveAndScheduleAlarm(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return alarmScheduler.allowedToCreateAlarms()
+        }
+        return true
+    }
+
+    fun navigateToGetPermissionsForAlarm() {
+        alarmScheduler.navigateToPermissionsForAlarm()
+    }
 }
 
-class AlarmListViewModelFactory(private val database: AlarmDatabase): ViewModelProvider.Factory {
+class AlarmListViewModelFactory(private val database: AlarmDatabase, private val context: Context): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AlarmListViewModel::class.java)) {
             val repositoryImpl = AlarmRepositoryImpl(database.alarmDao)
-            return AlarmListViewModel(repositoryImpl) as T
+            val permissionManager = AlarmSchedulerImpl(context)
+            return AlarmListViewModel(repositoryImpl, permissionManager) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

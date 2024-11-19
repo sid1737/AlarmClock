@@ -1,7 +1,10 @@
 package com.example.clock.utilities
 
 import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Locale
 
 object AlarmUtility {
@@ -69,8 +72,9 @@ object AlarmUtility {
     }
 
     fun convertTimeToMilliseconds(timeString: String): Long {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        val date = format.parse(timeString)
-        return date?.time ?: 0L
+        val localTime = LocalTime.parse(timeString)
+        val localDate = LocalDate.now()
+        val zonedDateTime = ZonedDateTime.of(localDate, localTime, ZoneId.systemDefault())
+        return zonedDateTime.toInstant().toEpochMilli()
     }
 }

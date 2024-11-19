@@ -10,15 +10,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +37,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -48,13 +60,35 @@ fun AlarmListScreen(
     viewModel: AlarmListViewModel
 ) {
     val alarms = viewModel.listOfAlarmData.collectAsState()
+
+    var canCreateAlarms by remember {
+        mutableStateOf(viewModel.isAndroid12AndAboveAndScheduleAlarm())
+    }
+
+    val lifeCycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+
     val context = LocalContext.current
+
+    DisposableEffect(lifeCycleOwner) {
+        val lifecycle = lifeCycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { _ , event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                canCreateAlarms = viewModel.isAndroid12AndAboveAndScheduleAlarm()
+            }
+        }
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
+    }
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Screen.CreateAlarmScreen.route)
+                    if(canCreateAlarms) {
+                        navController.navigate(Screen.CreateAlarmScreen.route)
+                    }
                 },
                 shape = CircleShape,
                 containerColor = brightBlue
@@ -69,7 +103,49 @@ fun AlarmListScreen(
         floatingActionButtonPosition = FabPosition.Center
     ) { innerPadding ->
 
-        if (alarms.value.isEmpty()) {
+        if(!canCreateAlarms) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(
+                        top = defaultPadding,
+                        start = defaultPadding,
+                        end = defaultPadding
+                    ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_alarm_clock_blue),
+                    tint = brightBlue,
+                    contentDescription = null,
+                )
+                Spacer(
+                    modifier = Modifier.height(defaultPadding)
+                )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = context.getString(R.string.permission_description)
+                )
+                Spacer(
+                    modifier = Modifier.height(defaultPadding)
+                )
+                Button(
+                    onClick = {
+                        viewModel.navigateToGetPermissionsForAlarm()
+                    },
+                    shape = RoundedCornerShape(defaultPadding),
+                    colors = ButtonDefaults.buttonColors(brightBlue)
+                ) {
+                    Text(
+                        text = context.getString(R.string.get_permissions_button)
+                    )
+                }
+            }
+        }
+        else if (alarms.value.isEmpty()) {
             Column(
                 modifier = modifier
                     .fillMaxSize()

@@ -35,10 +35,10 @@ class MainActivity : ComponentActivity() {
                 .build()
         }
 
-        val alarmListViewModelFactory = AlarmListViewModelFactory(database)
+        val alarmListViewModelFactory = AlarmListViewModelFactory(database, applicationContext)
         val alarmListViewModel = ViewModelProvider(this , alarmListViewModelFactory)[AlarmListViewModel::class.java]
 
-        val createAlarmViewModelFactory = CreateAlarmViewModelFactory(database)
+        val createAlarmViewModelFactory = CreateAlarmViewModelFactory(database, applicationContext)
         val createAlarmViewModel = ViewModelProvider(this, createAlarmViewModelFactory)[CreateAlarmViewModel::class.java]
 
         enableEdgeToEdge()
