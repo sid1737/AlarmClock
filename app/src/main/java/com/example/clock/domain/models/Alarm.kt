@@ -10,5 +10,6 @@ data class Alarm(
     val time: String,
     var isAlarmActive: Boolean,
     val alarmDescription: String,
-    val alarmName: String
+    val alarmName: String,
+    val pendingIntentRequestCode: Int
 )

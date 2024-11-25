@@ -1,5 +1,8 @@
 package com.example.clock
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -42,6 +45,7 @@ class MainActivity : ComponentActivity() {
         val createAlarmViewModel = ViewModelProvider(this, createAlarmViewModelFactory)[CreateAlarmViewModel::class.java]
 
         enableEdgeToEdge()
+        checkPushNotificationPermission()
         setContent {
             ClockTheme {
                 Surface(
@@ -52,6 +56,18 @@ class MainActivity : ComponentActivity() {
                         createAlarmViewModel = createAlarmViewModel
                     )
                 }
+            }
+        }
+    }
+
+    private fun checkPushNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val isPushNotificationPermissionGranted = checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+            if (isPushNotificationPermissionGranted != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(
+                    arrayOf( Manifest.permission.POST_NOTIFICATIONS),
+                    1
+                )
             }
         }
     }

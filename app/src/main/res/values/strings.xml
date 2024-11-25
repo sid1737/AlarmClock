@@ -5,4 +5,8 @@
     <string name="save_button_text">Save</string>
     <string name="permission_description"> In order to schedule an alarm you need to toggle the permissions. Press below button to navigate to the permissions.</string>
     <string name="get_permissions_button">Get Permissions</string>
+    <string name="title_activity_alarm_screen">AlarmScreenActivity</string>
+    <string name="turn_off_button_text">Turn Off</string>
+    <string name="overlay_permission_title">Overlay Permission Required</string>
+    <string name="overlay_permission_description">This app requires overlay permissions enabled to show alarms on top of the apps</string>
 </resources>

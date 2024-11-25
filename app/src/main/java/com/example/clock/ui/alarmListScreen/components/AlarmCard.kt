@@ -105,13 +105,6 @@ fun AlarmCard(
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.alignByBaseline()
                 )
-/*                Text(
-                    text = if (alarm.isDayTime) "AM" else "PM",
-                    fontSize = largeTextSize,
-                    fontFamily = montSerratFontFamily,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier.alignByBaseline()
-                )*/
             }
             Spacer(
                 modifier = Modifier.height(verticalSpacerHeightMedium)
@@ -133,7 +126,8 @@ fun Preview() {
         time = "10:00",
         alarmDescription = "Alarm in 30 min",
         isAlarmActive = true,
-        alarmName = "Work"
+        alarmName = "Work",
+        pendingIntentRequestCode = 1
     )
     AlarmCard(
         alarm = mockAlarm,

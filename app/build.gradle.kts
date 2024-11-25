@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.viewmodel.compose)
     implementation(libs.androidx.room)
+    debugImplementation(libs.androidx.ui.test.manifest)
     ksp(libs.androidx.room.compiler)
     implementation(libs.room.runtime)
     implementation(libs.androidx.lifecycle)

@@ -65,6 +65,10 @@ fun AlarmListScreen(
         mutableStateOf(viewModel.isAndroid12AndAboveAndScheduleAlarm())
     }
 
+    var canShowOverlayToUsers by remember {
+        mutableStateOf(viewModel.canAppDrawOverlays())
+    }
+
     val lifeCycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
     val context = LocalContext.current
@@ -74,6 +78,7 @@ fun AlarmListScreen(
         val observer = LifecycleEventObserver { _ , event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 canCreateAlarms = viewModel.isAndroid12AndAboveAndScheduleAlarm()
+                canShowOverlayToUsers = viewModel.canAppDrawOverlays()
             }
         }
         lifecycle.addObserver(observer)
@@ -86,7 +91,7 @@ fun AlarmListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    if(canCreateAlarms) {
+                    if(canCreateAlarms && canShowOverlayToUsers) {
                         navController.navigate(Screen.CreateAlarmScreen.route)
                     }
                 },
@@ -135,6 +140,48 @@ fun AlarmListScreen(
                 Button(
                     onClick = {
                         viewModel.navigateToGetPermissionsForAlarm()
+                    },
+                    shape = RoundedCornerShape(defaultPadding),
+                    colors = ButtonDefaults.buttonColors(brightBlue)
+                ) {
+                    Text(
+                        text = context.getString(R.string.get_permissions_button)
+                    )
+                }
+            }
+        }
+        else if (!canShowOverlayToUsers) {
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(
+                        top = defaultPadding,
+                        start = defaultPadding,
+                        end = defaultPadding
+                    ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+
+                Icon(
+                    painter = painterResource(R.drawable.ic_alarm_clock_blue),
+                    tint = brightBlue,
+                    contentDescription = null,
+                )
+                Spacer(
+                    modifier = Modifier.height(defaultPadding)
+                )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    text = context.getString(R.string.overlay_permission_description)
+                )
+                Spacer(
+                    modifier = Modifier.height(defaultPadding)
+                )
+                Button(
+                    onClick = {
+                        viewModel.navigateToGetPermissionForOverlay()
                     },
                     shape = RoundedCornerShape(defaultPadding),
                     colors = ButtonDefaults.buttonColors(brightBlue)
@@ -211,12 +258,20 @@ fun AlarmListScreen(
                         ) {
                             AlarmCard(
                                 alarm = alarm,
-                                onClick = {
-                                    viewModel.onEvent(
-                                        AlarmListEvents.DisableAlarm(
-                                            alarm.copy(isAlarmActive = !alarm.isAlarmActive)
+                                onClick = { alarmObject ->
+                                    if (alarmObject.isAlarmActive) {
+                                        viewModel.onEvent(
+                                            AlarmListEvents.EnableAlarm(
+                                                alarm.copy(isAlarmActive = true)
+                                            )
                                         )
-                                    )
+                                    } else {
+                                        viewModel.onEvent(
+                                            AlarmListEvents.DisableAlarm(
+                                                alarm.copy(isAlarmActive = false)
+                                            )
+                                        )
+                                    }
                                 }
                             )
                         }

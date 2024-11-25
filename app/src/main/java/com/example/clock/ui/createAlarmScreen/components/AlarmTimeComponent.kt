@@ -58,7 +58,6 @@ fun AlarmTimeComponent(
         mutableStateOf("00")
     }
 
-
     val textStyle = TextStyle(
         fontFamily = montSerratFontFamily,
         fontSize = largeTextSize,

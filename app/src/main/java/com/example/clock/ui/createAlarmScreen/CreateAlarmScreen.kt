@@ -28,7 +28,7 @@ import com.example.clock.R
 import com.example.clock.ui.createAlarmScreen.components.AlarmNameComponent
 import com.example.clock.ui.createAlarmScreen.components.AlarmTimeComponent
 import com.example.clock.ui.createAlarmScreen.components.CurvedButtonCloseIcon
-import com.example.clock.ui.createAlarmScreen.components.CurvedTextButton
+import com.example.clock.ui.common.components.CurvedTextButton
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.utilities.AlarmUtility.isValid24HourFormatTime
 
@@ -93,7 +93,7 @@ fun CreateAlarmScreen(
                             alarmName = alarmName
                         )
                         viewModel.onEvent(CreateAlarmEvents.OnSaveButtonClick(alarmData))
-                        viewModel.scheduleAlarm(timeData)
+                        viewModel.scheduleAlarm(timeData, alarmName, alarmData.pendingIntentRequestCode)
                         navController.navigateUp()
                     }
                 }

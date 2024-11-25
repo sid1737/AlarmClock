@@ -41,21 +41,46 @@ class AlarmListViewModel(
     fun onEvent(event: AlarmListEvents) {
         viewModelScope.launch(Dispatchers.IO) {
             when (event) {
-                is AlarmListEvents.DisableAlarm -> alarmRepository.updateAlarm(event.alarm)
+                is AlarmListEvents.DisableAlarm -> {
+                    alarmRepository.updateAlarm(event.alarm)
+                    alarmScheduler.cancelAlarm(
+                        timeData = event.alarm.time,
+                        alarmName = event.alarm.alarmName,
+                        requestCode = event.alarm.pendingIntentRequestCode
+                    )
+                }
+                is AlarmListEvents.EnableAlarm -> {
+                    alarmRepository.updateAlarm(event.alarm)
+                    val pendingIntent = alarmScheduler.getPendingIntentWithData(
+                        event.alarm.time,
+                        event.alarm.alarmName,
+                        event.alarm.pendingIntentRequestCode
+                    )
+                    alarmScheduler.setAlarm(event.alarm.time, pendingIntent)
+                }
                 is AlarmListEvents.DeleteAlarm -> alarmRepository.deleteAlarm(event.alarm)
             }
         }
     }
 
     fun isAndroid12AndAboveAndScheduleAlarm(): Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return alarmScheduler.allowedToCreateAlarms()
+        return  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            alarmScheduler.allowedToCreateAlarms()
+        } else {
+            true
         }
-        return true
     }
 
     fun navigateToGetPermissionsForAlarm() {
         alarmScheduler.navigateToPermissionsForAlarm()
+    }
+
+    fun navigateToGetPermissionForOverlay() {
+        alarmScheduler.navigateToPermissionForOverlay()
+    }
+
+    fun canAppDrawOverlays(): Boolean {
+        return alarmScheduler.canDrawOverlay()
     }
 }
 

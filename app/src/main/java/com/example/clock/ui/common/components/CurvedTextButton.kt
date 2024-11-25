@@ -1,4 +1,4 @@
-package com.example.clock.ui.createAlarmScreen.components
+package com.example.clock.ui.common.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button

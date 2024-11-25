@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.clock.R
+import com.example.clock.ui.common.components.CurvedTextButton
 import com.example.clock.ui.theme.defaultPadding
 import com.example.clock.ui.theme.montSerratFontFamily
 import com.example.clock.ui.theme.standardTextSize

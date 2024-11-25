@@ -12,6 +12,7 @@ import com.example.clock.domain.repository.AlarmScheduler
 import com.example.clock.domain.repository.AlarmSchedulerImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 class CreateAlarmViewModel(
     private val alarmRepository: AlarmRepository,
@@ -36,12 +37,13 @@ class CreateAlarmViewModel(
             time = time,
             isAlarmActive = isAlarmActive,
             alarmDescription = alarmDescription,
-            alarmName = alarmName
+            alarmName = alarmName,
+            pendingIntentRequestCode = Random.nextInt()
         )
     }
 
-    fun scheduleAlarm(timeData: String) {
-        val pendingIntent = alarmScheduler.getPendingIntent()
+    fun scheduleAlarm(timeData: String, alarmName: String, pendingIntentRequestCode: Int) {
+        val pendingIntent = alarmScheduler.getPendingIntentWithData(timeData, alarmName, pendingIntentRequestCode)
         alarmScheduler.setAlarm(timeData, pendingIntent)
     }
 }

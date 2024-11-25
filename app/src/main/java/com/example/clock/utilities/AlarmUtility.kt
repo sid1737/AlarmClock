@@ -5,6 +5,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.Calendar
 import java.util.Locale
 
 object AlarmUtility {
@@ -16,7 +17,14 @@ object AlarmUtility {
         timeFormat.isLenient = false
 
         return try {
-            timeFormat.parse(time) != null
+            val isValidTime = timeFormat.parse(time) != null
+            if (isValidTime) {
+                val calendar = Calendar.getInstance()
+                calendar.time = timeFormat.parse(time)!!
+                calendar.get(Calendar.HOUR) != 0
+            } else {
+                false
+            }
         } catch (e: Exception) {
             false
         }
