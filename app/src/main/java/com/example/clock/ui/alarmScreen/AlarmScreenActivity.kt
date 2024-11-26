@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
@@ -83,9 +82,10 @@ class AlarmScreenActivity : ComponentActivity() {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             style = TextStyle(
+                                color = brightBlue,
                                 fontFamily = montSerratFontFamily,
                                 fontSize = 82.sp,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
                             text = timeData
@@ -98,8 +98,7 @@ class AlarmScreenActivity : ComponentActivity() {
                             style = TextStyle(
                                 fontFamily = montSerratFontFamily,
                                 fontSize = 24.sp,
-                                fontWeight = FontWeight.Normal,
-                                fontStyle = FontStyle.Normal,
+                                fontWeight = FontWeight.Bold,
                                 textAlign = TextAlign.Center
                             ),
                             text = alarmName
