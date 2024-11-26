@@ -98,7 +98,7 @@ class AlarmScreenActivity : ComponentActivity() {
                             style = TextStyle(
                                 fontFamily = montSerratFontFamily,
                                 fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
+                                fontWeight = FontWeight.SemiBold,
                                 textAlign = TextAlign.Center
                             ),
                             text = alarmName
