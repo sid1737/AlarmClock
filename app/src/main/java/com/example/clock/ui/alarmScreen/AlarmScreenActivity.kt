@@ -2,11 +2,13 @@ package com.example.clock.ui.alarmScreen
 
 import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,16 +41,18 @@ import com.example.clock.ui.theme.montSerratFontFamily
 class AlarmScreenActivity : ComponentActivity() {
     private lateinit var alarmManager: AlarmNotificationManagerImpl
 
+    @RequiresApi(Build.VERSION_CODES.O_MR1)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         alarmManager = AlarmNotificationManagerImpl(applicationContext)
-        // Make the activity appear as an overlay
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-        )
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O ||
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.P) {
+            window.addFlags(
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+            )
+        }
         enableEdgeToEdge()
         alarmManager.startRingtone()
         val timeData = intent.getStringExtra(TIME_DATA_KEY) ?: "Alarm Triggered"
